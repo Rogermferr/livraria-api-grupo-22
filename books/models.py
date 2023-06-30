@@ -1,3 +1,9 @@
 from django.db import models
 
-# Create your models here.
+
+class Book(models.Model):
+    title = models.CharField(max_length=127)
+    author = models.CharField(max_length=127)
+    pages = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
