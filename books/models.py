@@ -7,3 +7,4 @@ class Book(models.Model):
     pages = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    user = models.ManyToManyField('users.User', related_name='user_books')

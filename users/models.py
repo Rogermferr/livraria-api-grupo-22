@@ -8,3 +8,4 @@ class User(AbstractUser):
     password = models.CharField(max_length=20)
     cpf = models.CharField(max_length=11, unique=True)
     is_superuser = models.BooleanField(default=False)
+    user_loan = models.ManyToManyField('copies.Copy', through='loans.Loan', related_name='copies_loans_user')
