@@ -1,3 +1,5 @@
 from django.db import models
 
-# Create your models here.
+
+class Copy(models.Model):
+    book = models.ForeignKey('books.Book', on_delete=models.CASCADE)
