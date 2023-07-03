@@ -6,6 +6,7 @@ class User(AbstractUser):
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=127, unique=True)
     password = models.CharField(max_length=20)
+    full_name = models.CharField(max_length=255)
     cpf = models.CharField(max_length=11, unique=True)
     is_superuser = models.BooleanField(default=False)
     user_loan = models.ManyToManyField('copies.Copy', through='loans.Loan', related_name='copies_loans_user')
