@@ -47,14 +47,9 @@ THIRD_PARTY_APPS = [
     "rest_framework",
 ]
 
-MY_APPS = [
-    "users",
-    "loans",
-    "books",
-    "copies"
-]
+MY_APPS = ["users", "loans", "books", "copies"]
 
-INSTALLED_APPS = DJANGO_APPS + MY_APPS + THIRD_PARTY_APPS + ['drf_spectacular']
+INSTALLED_APPS = DJANGO_APPS + MY_APPS + THIRD_PARTY_APPS + ["drf_spectacular"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -144,10 +139,13 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
 }
 
-REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 2
-}
+REST_FRAMEWORK = {"DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination", "PAGE_SIZE": 2}
 
 AUTH_USER_MODEL = "users.User"
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_TLS = True
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")

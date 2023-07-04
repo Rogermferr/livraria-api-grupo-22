@@ -9,7 +9,14 @@ class CopySerializer(serializers.ModelSerializer):
     class Meta:
         model = Copy
 
-        fields = ["id", "book_title"]
+        fields = ["id", "book_id", "book_title"]
 
-    def get_book_title(self, obj: Book):
-        return obj.title
+        extra_kwargs = {
+            "book_id": {"read_only": True},
+        }
+
+        def create(self, validated_data):
+            return Copy.objects.create(**validated_data)
+
+    def get_book_title(self, obj):
+        return obj.book.title
