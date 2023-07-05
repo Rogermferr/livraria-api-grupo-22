@@ -9,8 +9,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'email', 'cpf', 'password', 'is_superuser', 'full_name', 'block_date', 'is_blocked']
         extra_kwargs = {'password': {'write_only': True},
-                        'block_date': {'allow_null': True, 'read_only' : True},
-                        'is_blocked': {'read_only': True}}
+                        'block_date': {'allow_null': True}}
+                        #'is_blocked': {'read_only': True}}
 
     def create(self, validated_data):
         

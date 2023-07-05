@@ -29,25 +29,18 @@ class LoanSerializer(serializers.ModelSerializer):
 
         if loans:
             for loan in loans:
-                if not loan.updated_at == loan.created.at:
-
-                    if loan.updated_at > loan.return_date:
-                        user.block_date = loan.updated_at + timedelta(days=3)
-                        user.is_blocked = True
-                    
-                    if current_date > loan.return_date and not loan.is_finished:
+                if current_date > loan.return_date and not loan.is_finished:
                         user.block_date = current_date + timedelta(days=3)
                         user.is_blocked = True
-
-
-                if current_date > loan.return_date and not loan.is_finished:
-                    raise ValidationError({"error": "O empréstimo não pode ser criado."})
-                
-        if current_date > user.block_date:
+                        user.save()
+                        raise ValidationError({"error": "O empréstimo não pode ser criado."})
+    
+        if user.block_date and current_date > user.block_date:
             user.is_blocked = False
-#
+            user.save()
+
         if user.is_blocked:
-            raise PermissionError(detil={"error":"Este usuario esta bloqueado."})
+            raise ValidationError(detail={"error":"Este usuario esta bloqueado."})
 
         if not copy.is_available:
             raise ValidationError(detail={"error": "Essa cópia não está disponível."})
@@ -68,9 +61,14 @@ class LoanSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         current_date = datetime.now().date()
         future_date = current_date + timedelta(days=7)
-
-        loan = get_object_or_404(Loan, user=validated_data.get("user"))
+        user = get_object_or_404(User, username=validated_data.get("user"))
         copy = get_object_or_404(Copy, id=self.context["view"].kwargs["pk"])
+        loan = Loan.objects.filter(copy=copy).first()
+
+        if current_date > loan.return_date:
+            user.block_date = loan.updated_at + timedelta(days=3)
+            user.is_blocked = True
+            user.save()
 
         if future_date.weekday() >= 5:
            raise ValidationError(detail={"error": "A devolucao nao pode ser realizada aos finais de semana."})
@@ -78,4 +76,5 @@ class LoanSerializer(serializers.ModelSerializer):
         loan.is_finished = True
         copy.is_available = True
         copy.save()
+
         return loan
