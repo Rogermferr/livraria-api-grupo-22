@@ -39,3 +39,15 @@ class LoansCreateView(generics.CreateAPIView):
         user = User.objects.filter(id=self.request.data.get("user_id")).first()
         copy = Copy.objects.filter(id=self.kwargs.get("pk")).first()
         return serializer.save(copy=copy, user=user)
+
+class LoansUpdateView(generics.UpdateAPIView):
+    permission_classes = [IsAdminOrReadOnly, IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+
+    queryset = Loan.objects.all()
+    serializer_class = LoanSerializer
+
+    def perform_update(self, serializer):
+        user = User.objects.filter(id=self.request.data.get("user_id")).first()
+        copy = Copy.objects.filter(id=self.kwargs.get("pk")).first()
+        return serializer.save(copy=copy, user=user)

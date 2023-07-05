@@ -3,6 +3,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from .serializer import BookSerializer, BookUpdateSerializer
 from .models import Book
 from .permissions import IsAdminOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 
 
 class BookView(generics.ListCreateAPIView):
@@ -15,7 +16,7 @@ class BookView(generics.ListCreateAPIView):
 
 class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly, IsAuthenticated]
 
     queryset = Book.objects.all()
     serializer_class = BookUpdateSerializer
