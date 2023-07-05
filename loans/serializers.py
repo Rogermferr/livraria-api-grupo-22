@@ -4,7 +4,8 @@ from users.serializer import UserSerializer
 from datetime import timedelta, datetime
 from .models import Loan
 from rest_framework.exceptions import ValidationError
-from rest_framework.views import status
+from copies.models import Copy
+from django.shortcuts import get_object_or_404
 
 
 class LoanSerializer(serializers.ModelSerializer):
@@ -22,9 +23,24 @@ class LoanSerializer(serializers.ModelSerializer):
 
         loan = Loan.objects.filter(user=validated_data.get("user")).first()
 
-        if current_date < loan.return_date and not loan.is_finished:
-            raise ValidationError(
-                detail={"error": "O empréstimo não pode ser criado."}, code=status.HTTP_401_UNAUTHORIZED
-            )
+        copy_id = self.context["view"].kwargs["pk"]
+        copy = get_object_or_404(Copy, id=copy_id)
 
-        return Loan.objects.create(return_date=future_date, **validated_data)
+        if not copy.is_available:
+            raise ValidationError(detail={"error": "Essa cópia não está disponível."})
+
+        if current_date > loan.return_date and not loan.is_finished:
+            raise ValidationError(detail={"error": "O empréstimo não pode ser criado."})
+
+        if future_date.weekday() >= 5:
+            if future_date.weekday() == 5:
+                future_date += timedelta(days=2)
+            elif future_date.weekday() == 6:
+                future_date += timedelta(days=1)
+
+        loan = Loan.objects.create(return_date=future_date, **validated_data)
+
+        copy.is_available = False
+        copy.save()
+
+        return loan
