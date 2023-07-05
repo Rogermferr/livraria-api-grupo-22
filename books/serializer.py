@@ -7,8 +7,8 @@ from copies.serializer import CopySerializer
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-
-        fields = ["id", "title", "author", "pages", "summary", "number_copies"]
+        fields = ["id", "title", "author", "pages", "summary", "number_copies","is_blocked"]
+        extra_kwargs = {"number_copies": {"allow_null": True}}
 
     def create(self, validated_data):
         number_copies = validated_data.get("number_copies", 0)

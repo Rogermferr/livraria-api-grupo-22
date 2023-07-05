@@ -8,5 +8,5 @@ class Book(models.Model):
     summary = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    number_copies = models.IntegerField()
+    number_copies = models.IntegerField(default=0)
     follower = models.ManyToManyField("users.User", related_name="user_books")
