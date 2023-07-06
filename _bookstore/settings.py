@@ -139,7 +139,7 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
 }
 
-REST_FRAMEWORK = {"DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination", "PAGE_SIZE": 5}
+REST_FRAMEWORK = {"DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination", "PAGE_SIZE": 5,  'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'}
 
 AUTH_USER_MODEL = "users.User"
 
@@ -149,3 +149,9 @@ EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = os.getenv("EMAIL_PORT")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Livraria API',
+    'DESCRIPTION': 'Informacoes e emprestimos de livros.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': True,
+}
