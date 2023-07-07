@@ -1,20 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# exit on error
+set -o errexit
 
-
-# Build the project
-
-
-echo "Building the project..."
-python3.9 -m pip install -r requirements.txt
-
-
-echo "Make Migrations"
-python3.9 manage.py makemigrations --noinput
-python3.9 manage.py migrate --noinput
-
-
-echo "Collect Static..."
-python3.9 manage.py collectstatic --no-input --clear
-
-
-echo "BUILD END"
+pip install -r requirements.txt
+python manage.py collectstatic --no-input
+python manage.py migrate
