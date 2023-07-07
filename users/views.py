@@ -24,7 +24,6 @@ class UserViewfollowerBook(generics.ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-    # queryset = Book.objects.all()
     serializer_class = UserFollowerSerializer
 
     def perform_create(self, serializer):
