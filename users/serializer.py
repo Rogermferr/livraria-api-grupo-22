@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import User
+from books.models import Book
 from rest_framework.validators import UniqueValidator
 
 
@@ -39,3 +40,7 @@ class UserSerializer(serializers.ModelSerializer):
             return User.objects.create_superuser(**validated_data)
 
         return User.objects.create_user(**validated_data)
+
+
+class UserFollowerSerializer(serializers.Serializer):
+    ...

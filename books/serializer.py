@@ -1,13 +1,16 @@
 from rest_framework import serializers
+
+from _bookstore import settings
 from .models import Book
 from copies.models import Copy
 from copies.serializer import CopySerializer
+from django.core.mail import send_mail
 
 
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ["id", "title", "author", "pages", "summary", "number_copies"]
+        fields = ["id", "title", "author", "pages", "summary", "number_copies", "availability"]
         extra_kwargs = {"number_copies": {"allow_null": True}}
 
     def create(self, validated_data):
@@ -34,16 +37,32 @@ class BookUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
 
-        fields = ["id", "title", "author", "pages", "summary", "number_copies"]
+        fields = ["id", "title", "author", "pages", "summary", "number_copies", "availability"]
 
         extra_kwargs = {
             "number_copies": {"read_only": True},
         }
 
     def update(self, instance, validated_data):
+
+        check_availability = False
+
         for key, value in validated_data.items():
             setattr(instance, key, value)
+            if key == 'availability':
+                check_availability = True
 
         instance.save()
+
+        if check_availability:
+
+            users_followed = instance.follower.all()
+
+            for user in users_followed:
+                subject = 'Livro Disponivel'
+                message = f'O livro {instance.title} está disponivel para emprestimo'
+                from_email = settings.EMAIL_HOST_USER
+                recipient_list = [user.email]
+                send_mail(subject, message, from_email, recipient_list)
 
         return instance

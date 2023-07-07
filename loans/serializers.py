@@ -25,6 +25,10 @@ class LoanSerializer(serializers.ModelSerializer):
         loans = Loan.objects.filter(user=user.id)
         copy_id = self.context["view"].kwargs["pk"]
         copy = get_object_or_404(Copy, id=copy_id)
+        book = copy.book
+
+        if not book.availability:
+            raise ValidationError({"error": "Esse livro não esta disponivel"})
 
         if loans:
             for loan in loans:
