@@ -17,11 +17,9 @@ jedi==0.18.2
 jsonschema==4.17.3
 matplotlib-inline==0.1.6
 parso==0.8.3
-pexpect==4.8.0
 pickleshare==0.7.5
 prompt-toolkit==3.0.38
 psycopg2-binary==2.9.6
-ptyprocess==0.7.0
 pure-eval==0.2.2
 pycodestyle==2.10.0
 Pygments==2.15.1
