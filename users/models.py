@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=127, unique=True)
-    password = models.CharField(max_length=20)
+    password = models.CharField(max_length=200)
     full_name = models.CharField(max_length=255)
     cpf = models.CharField(max_length=11, unique=True)
     is_superuser = models.BooleanField(default=False)
