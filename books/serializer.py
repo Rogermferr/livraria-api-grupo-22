@@ -60,7 +60,7 @@ class BookUpdateSerializer(serializers.ModelSerializer):
 
             for user in users_followed:
                 subject = 'Livro Disponivel'
-                message = f'O livro {instance.title} está disponivel para emprestimo'
+                message = f'The book {instance.title} is available for loan'
                 from_email = settings.EMAIL_HOST_USER
                 recipient_list = [user.email]
                 send_mail(subject, message, from_email, recipient_list)

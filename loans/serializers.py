@@ -28,7 +28,7 @@ class LoanSerializer(serializers.ModelSerializer):
         book = copy.book
 
         if not book.availability:
-            raise PermissionDenied({"error": "Esse livro não esta disponivel"})
+            raise PermissionDenied({"error": "This book is not available"})
 
         if loans:
             for loan in loans:
@@ -36,17 +36,17 @@ class LoanSerializer(serializers.ModelSerializer):
                     user.block_date = current_date + timedelta(days=3)
                     user.is_blocked = True
                     user.save()
-                    raise PermissionDenied({"error": "O empréstimo não pode ser criado."})
+                    raise PermissionDenied({"error": "The loan cannot be created."})
 
         if user.block_date and current_date > user.block_date:
             user.is_blocked = False
             user.save()
 
         if user.is_blocked:
-            raise PermissionDenied(detail={"error": "Este usuario esta bloqueado."})
+            raise PermissionDenied(detail={"error": "This user is blocked."})
 
         if not copy.is_available:
-            raise PermissionDenied(detail={"error": "Essa cópia não está disponível."})
+            raise PermissionDenied(detail={"error": "This copy is not available."})
 
         if future_date.weekday() >= 5:
             if future_date.weekday() == 5:
@@ -74,7 +74,7 @@ class LoanSerializer(serializers.ModelSerializer):
             user.save()
 
         if future_date.weekday() >= 5:
-            raise PermissionDenied(detail={"error": "A devolucao nao pode ser realizada aos finais de semana."})
+            raise PermissionDenied(detail={"error": "Returns cannot be made on weekends."})
 
         loan.is_finished = True
         copy.is_available = True

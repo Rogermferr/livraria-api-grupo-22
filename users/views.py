@@ -26,18 +26,23 @@ class UserViewfollowerBook(generics.ListCreateAPIView):
 
     serializer_class = UserFollowerSerializer
 
+    def create(self, request, *args, **kwargs):
+        book = Book.objects.get(id=self.kwargs['book_id'])
+
+        return Response({"message": f"Are you following the {book.title}"}, 
+                        status=status.HTTP_201_CREATED)
+
     def perform_create(self, serializer):
         book = Book.objects.get(id=self.kwargs['book_id'])
         user = self.request.user
         
         if not book:
-            raise NotFound({"error": "Livro não encontrado"})
+            raise NotFound({"error": "book not found"})
         
         book.follower.add(user)
         book.save()
 
-        return Response({"message": f"Você esta seguindo o {book.title}"}, 
-                        status=status.HTTP_201_CREATED)
+        
          
 
      
