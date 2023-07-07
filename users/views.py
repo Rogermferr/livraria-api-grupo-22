@@ -36,10 +36,9 @@ class UserViewfollowerBook(generics.ListCreateAPIView):
         
         book.follower.add(user)
         book.save()
-        
-    def create(self, request, *args, **kwargs):
-        book = Book.objects.get(id=self.kwargs['book_id'])
 
         return Response({"message": f"Você esta seguindo o {book.title}"}, 
                         status=status.HTTP_201_CREATED)
-    
+         
+
+     

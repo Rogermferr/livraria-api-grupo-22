@@ -54,7 +54,7 @@ class BookUpdateSerializer(serializers.ModelSerializer):
 
         instance.save()
 
-        if check_availability:
+        if check_availability and instance.availability:
 
             users_followed = instance.follower.all()
 
