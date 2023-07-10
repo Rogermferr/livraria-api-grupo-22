@@ -27,6 +27,9 @@ class LoanSerializer(serializers.ModelSerializer):
         copy = get_object_or_404(Copy, id=copy_id)
         book = copy.book
 
+        if user.is_superuser:
+            raise PermissionDenied({"error": "Unable to lend a book to a collaborator"})
+
         if not book.availability:
             raise PermissionDenied({"error": "This book is not available"})
 
