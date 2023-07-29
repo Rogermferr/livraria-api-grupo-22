@@ -33,3 +33,7 @@ Com essa API atualizada, o gerenciamento completo da biblioteca é simplificado,
 
 Url Base: https://bookstorecultura.onrender.com
 Documentação: https://bookstorecultura.onrender.com/api/docs/swagger/
+
+Para testar a api utilize o insomnia:
+
+<a href="https://insomnia.rest/run/?label=Livraria%20Cultura%20Kenzie&uri=https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2F11X0XAz1xFqY1HBpUax9k2FBFpmL7hgoI%2Fview%3Fusp%3Dsharing" target="_blank"><img src="https://insomnia.rest/images/run.svg" alt="Run in Insomnia"></a>
